@@ -1,3 +1,4 @@
+<?php
 /* This file is purposely left blank.
  *
  * This file existed in previous versions of the module. When installing the
@@ -10,3 +11,4 @@
  * the process of copying files from the distribution to a Zen Cart
  * installation.
  */
+ ?>

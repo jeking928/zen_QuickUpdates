@@ -45,7 +45,7 @@ if (function_exists('zen_register_admin_page')) {
 function remove_quick_updates() {
 	global $db;
 		$sql = "SELECT configuration_group_id FROM ".TABLE_CONFIGURATION_GROUP." WHERE configuration_group_title = 'Quick Updates' LIMIT 1";
-		$result = mysql_query($sql);;
+		$result = mysql_query($sql);
 		if (mysql_num_rows($result)) { 
 			$group_id =  mysql_fetch_array($result);
 			$db->Execute("DELETE FROM ".TABLE_CONFIGURATION." WHERE configuration_group_id = ".$group_id[0]);
