@@ -34,7 +34,7 @@ INSERT INTO configuration (configuration_title, configuration_key, configuration
 ('Display Link to Product Edit Page','QUICKUPDATES_DISPLAY_EDIT','true','Enable/Disable the display of the link to the product edit page. Product edit page will open in a new window/tab. <br /><br />(Default value = True)', @t4, 90, NOW(), NOW(), NULL, 'zen_cfg_select_option(array(''true'', ''false''),'),
 ('Activate/Deactivate Commercial Margin','QUICKUPDATES_ACTIVATE_COMMERCIAL_MARGIN','true','Do you want that the commercial margin functions to be activated? <br /><br />(Default value = True)', @t4, 95, NOW(), NOW(), NULL, 'zen_cfg_select_option(array(''true'', ''false''),');
 
-INSERT  into zen_admin_pages (page_key,language_key,main_page,page_params,menu_key,display_on_menu,sort_order) VALUES 
+INSERT  into admin_pages (page_key,language_key,main_page,page_params,menu_key,display_on_menu,sort_order) VALUES 
 ('quick_updates_config','BOX_CONFIGURATION_QUICK_UPDATES','FILENAME_CONFIGURATION',CONCAT('gID=',@t4),'configuration','Y',104),
 ('quick_updates_catalog','BOX_CATALOG_QUICK_UPDATES','FILENAME_QUICK_UPDATES','','catalog','Y',105),
 ('quick_updates_popup_file_select','BOX_CATALOG_QUICK_UPDATES_POPUP_FS', 'FILENAME_POPUP_FILE_SELECT','', 'catalog', 'N',106),

@@ -1,14 +1,12 @@
-<?php
-if (!defined('IS_ADMIN_FLAG')) {
-    die('Illegal Access');
-}
-// Remove old Quick Updates Admin page registration. Corrected page registration follows 
-// (note the spaces and sentance format are replaced with the proper page_key format)
-    zen_deregister_admin_pages('Quick Updates');
-
-if (function_exists('zen_register_admin_page')) {
-    if (!zen_page_key_exists('quick_updates_catalog')) {
-        zen_register_admin_page('quick_updates_catalog', 'BOX_CATALOG_QUICK_UPDATES','FILENAME_QUICK_UPDATES', '', 'catalog', 'Y', 104);
-    }
-}
-?>
+/* This file is purposely left blank.
+ *
+ * This file existed in previous versions of the module. When installing the
+ * current version of this module this file should be removed from the
+ * installation. When upgrading from a previous version the end user can
+ * simply replace (overwrite) the current file with this "blank" file.
+ * If uploaded, the install / upgrade script removes this file automatially.
+ *
+ * This file is included in the distribution to make upgrades easier during
+ * the process of copying files from the distribution to a Zen Cart
+ * installation.
+ */

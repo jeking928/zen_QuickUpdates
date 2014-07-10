@@ -24,7 +24,7 @@ Features include:
 - Allows you to select products based on Category or Manufacturer. 
 - Allows you to globally increase or decrease the price for a range of products. 
 - Preview the changes before committing 
-- Configuration options to select which feilds to display on the form
+- Configuration options to select which fields to display on the form
 - Allows you to copy products very quickly
 ========================================================
 
