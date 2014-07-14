@@ -28,7 +28,7 @@ Features include:
 - Allows you to copy products very quickly
 ========================================================
 
-FILES TO OVER-RIDE
+FILES TO OVER-RIDE:
 
 none
 
