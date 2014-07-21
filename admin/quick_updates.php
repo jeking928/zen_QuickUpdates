@@ -547,7 +547,6 @@ if($image_sql != '') {
       <div class="quHeadingText"><?php echo QU_HEADING_TEXT; ?></div>
 	  <?PHP // Chadderuski - added uninstall link ?>
       <a class="button forward" title="Un-Install Quick Updates" href="<?php echo zen_href_link(FILENAME_QUICK_UPDATES, 'qu_installer=remove') ?>">Uninstall</a><br /><br />
-   
       <!-- eof pageHeading -->
             
       <!-- bof top forms -->
@@ -771,7 +770,7 @@ while (!$products->EOF) {
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'display\', ' . $price . ', ' . $tax_rate->fields['tax_rate'] . ');';
       }
-      $tr .= 'this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="';
+      $tr .= 'this.className=\'dataTableRowOver\';" onmouseout="';
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'delete\');';
       }
@@ -779,7 +778,7 @@ while (!$products->EOF) {
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'display\', ' . $products->fields['products_price'] . ', ' . $tax_rate->fields['tax_rate'] . ');';
       }
-      $tr .= 'this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="';
+      $tr .= 'this.className=\'dataTableRowOver\';" onmouseout="';
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'delete\', \'\', \'\', 0);';
       }
@@ -806,8 +805,8 @@ while (!$products->EOF) {
       echo '<td class="smallText productsImage">' .
       zen_draw_hidden_field('quick_updates_new[products_image][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_image']), 'id="SelectImageName_' . $products->fields['products_id'] . '"') .
       zen_draw_hidden_field('quick_updates_old[products_image][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_image'])) .
-      '<a href="javascript:selectFileID=\'SelectImageName_' . $products->fields['products_id'] . '\';updateImgId=\'SelectImageName_' . $products->fields['products_id'] . '_img\';popupWindow(\'' . zen_href_link(FILENAME_POPUP_FILE_SELECT, 'sdir=' . dirname($products->fields['products_image']) . '/') . '\');">' .
-      zen_image(DIR_WS_CATALOG_IMAGES . $products->fields['products_image'], TEXT_SELECT_IMAGE, QUICKUPDATES_DISPLAY_THUMBNAIL_WIDTH, QUICKUPDATES_DISPLAY_THUMBNAIL_HEIGHT, 'id="SelectImageName_' . $products->fields['products_id'] . '_img"') . '</a>'
+//      '<a href="javascript:selectFileID=\'SelectImageName_' . $products->fields['products_id'] . '\';updateImgId=\'SelectImageName_' . $products->fields['products_id'] . '_img\';popupWindow(\'' . zen_href_link(FILENAME_POPUP_FILE_SELECT, 'sdir=' . dirname($products->fields['products_image']) . '/') . '\');">' .
+      zen_image(DIR_WS_CATALOG_IMAGES . $products->fields['products_image'], '', QUICKUPDATES_DISPLAY_THUMBNAIL_WIDTH, QUICKUPDATES_DISPLAY_THUMBNAIL_HEIGHT, 'id="SelectImageName_' . $products->fields['products_id'] . '_img"') . '</a>'
        . '</td>' . "\n";
     }
 
