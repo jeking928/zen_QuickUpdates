@@ -510,6 +510,7 @@ else
 
 -->
 </script>
+<?php if ($editor_handler != '') include ($editor_handler); ?>
 </head>
 <body onLoad="init()" id="quickUpdates">
 <!-- header //-->
