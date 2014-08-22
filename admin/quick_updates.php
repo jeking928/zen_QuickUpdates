@@ -569,31 +569,6 @@ if($image_sql != '') {
             ?>
           </td>
           <td class="smallText">
-          <!-- bof spec_price form -->
-            <?php 
-            if(QUICKUPDATES_ACTIVATE_COMMERCIAL_MARGIN == 'true'){
-              echo zen_draw_form('price_markup', FILENAME_QUICK_UPDATES, zen_get_all_get_params(array('action', 'info', 'pID')) . "action=calcul");
-              echo TEXT_INPUT_SPEC_PRICE;
-              echo zen_draw_input_field('price_markup',0,'size="5"');
-              if ($preview_markup_price != true) {
-                echo '&nbsp;&nbsp;' . zen_image_submit('button_preview.gif', IMAGE_PREVIEW, zen_get_all_get_params(array()));
-              } else {
-                echo '&nbsp;&nbsp;<a href="' . zen_href_link(FILENAME_QUICK_UPDATES, zen_get_all_get_params(array())) . '">' . zen_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
-              }
-              
-                //no idea what this line is usefull for so it's commented out
-                echo '&nbsp;' . zen_draw_checkbox_field('marge','yes',true,'no') . '&nbsp;' . zen_image(DIR_WS_IMAGES . 'icon_info.gif', TEXT_MARGE_INFO);
-              if ($preview_markup_price != true) {
-                echo TEXT_SPEC_PRICE_INFO1 ;
-              } else {
-                echo TEXT_SPEC_PRICE_INFO2;
-              }
-              ?>
-            </form>
-            <?php
-            }
-            ?>
-          <!-- eof spec_price form -->
           </td>
           <td class="smallText"></td>
           <td class="smallText"></td>

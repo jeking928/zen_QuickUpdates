@@ -23,7 +23,6 @@ define('WARNING_MESSAGE','Update your modifications before all changing display 
 define('TOP_BAR_TITLE', 'Quick Updates');
 define('HEADING_TITLE', 'Quick Updates - v2.07');
 define('QU_HEADING_TEXT','<strong class="quWarning">Warning: Always backup your database before using Quick Updates!</strong>');
-define('TEXT_MARGE_INFO','Modify by commercial margin, if you check this box, your products will be stroked at the rates given. To stroke to 25%, means that the price is marked up of 33%.');
 define('TEXT_PRODUCTS_UPDATED', 'Product(s) Updated!');
 define('TEXT_CATEGORY_WITH_CHILDS', 'This category has subcategories! ');
 define('TEXT_IMAGE_PREVIEW','Preview item');
