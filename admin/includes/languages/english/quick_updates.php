@@ -46,7 +46,7 @@ define('TABLE_HEADING_PURCHASE_PRICE', 'Purchase');
 define('TABLE_HEADING_MARGIN', 'Margin (%)');
 define('TABLE_HEADING_PRICE', 'Price');
 // added for p.product_price_w
-define('TABLE_HEADING_WHOLESALE_PRICE', 'Wholesale');
+//define('TABLE_HEADING_WHOLESALE_PRICE', 'Wholesale');
 define('TABLE_HEADING_TAX_PRICE', 'Price (inc)');
 define('TABLE_HEADING_TAX', 'Tax Status');
 define('TABLE_HEADING_WEIGHT', 'Weight');

@@ -421,8 +421,10 @@ switch ($_GET['action']) {
     $extra_query .= ' p.products_purchase_price, p.products_margin,';
 
   // added for p.products_price_w
+  /*
   if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true')
     $extra_query .= ' p.products_price_w,';
+    */
     
   // added for QUICKUPDATES_NEW_COLUMN_1
   if(QUICKUPDATES_MODIFY_NEW_COLUMN_1 == 'true')
@@ -673,8 +675,10 @@ if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
   echo zen_quickupdates_table_head('p.products_margin', TABLE_HEADING_MARGIN);
 
 // added for p.products_price_w
+/*
 if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true')
   echo zen_quickupdates_table_head('p.products_price_w', TABLE_HEADING_WHOLESALE_PRICE);
+  */
 
 echo zen_quickupdates_table_head('p.products_price', TABLE_HEADING_PRICE);
 
@@ -861,10 +865,12 @@ while (!$products->EOF) {
     }
 
     // added for p.products_price_w
+    /*
     if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true'){
       $parameters = 'size="' . QUICKUPDATES_MODIFY_WHOLESALE_PRICE_INPUT_SIZE . '"';
       echo '<td class="smallText products_price_w">' . zen_draw_input_field('quick_updates_new[products_price_w][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_price_w'])) . zen_draw_hidden_field('quick_updates_old[products_price_w][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_price_w']), $parameters) . '</td>' . "\n";
     }
+    */
 
     //// get the specials products list
     $specials_array = array();
