@@ -385,7 +385,8 @@ switch ($_GET['action']) {
       if($_POST['quick_updates_new']['price_prefix']){
         foreach($_POST['quick_updates_new']['price_prefix'] as $products_attributes_id => $new_value) {
           if ($_POST['quick_updates_new']['price_prefix'][$products_attributes_id] != $_POST['quick_updates_old']['price_prefix'][$products_attributes_id]) {
-            $quick_updates_count['price_prefix'][$products_attributes_id] = $products_attributes_id;
+            //$quick_updates_count['price_prefix'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Price Prefix'][$products_id] = $products_id;
             $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET price_prefix='" . $new_value . "' WHERE products_attributes_id =" . (int)$products_attributes_id);
           }
         }
@@ -393,7 +394,8 @@ switch ($_GET['action']) {
       if($_POST['quick_updates_new']['options_values_price']){
         foreach($_POST['quick_updates_new']['options_values_price'] as $products_attributes_id => $new_value) {
           if ($_POST['quick_updates_new']['options_values_price'][$products_attributes_id] != $_POST['quick_updates_old']['options_values_price'][$products_attributes_id]) {
-            $quick_updates_count['options_values_price'][$products_attributes_id] = $products_attributes_id;
+            //$quick_updates_count['options_values_price'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Price'][$products_id] = $products_id;
             $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET options_values_price =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
           }
         }
@@ -401,7 +403,8 @@ switch ($_GET['action']) {
       if($_POST['quick_updates_new']['attributes_price_base_included']){
         foreach($_POST['quick_updates_new']['attributes_price_base_included'] as $products_attributes_id => $new_value) {
           if ($_POST['quick_updates_new']['attributes_price_base_included'][$products_attributes_id] != $_POST['quick_updates_old']['attributes_price_base_included'][$products_attributes_id]) {
-            $quick_updates_count['attributes_price_base_included'][$products_attributes_id] = $products_attributes_id;
+            //$quick_updates_count['attributes_price_base_included'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Base Price Included'][$products_id] = $products_id;
             $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET attributes_price_base_included =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
           }
         }
@@ -409,7 +412,8 @@ switch ($_GET['action']) {
       if($_POST['quick_updates_new']['products_attributes_weight']){
         foreach($_POST['quick_updates_new']['products_attributes_weight'] as $products_attributes_id => $new_value) {
           if ($_POST['quick_updates_new']['products_attributes_weight'][$products_attributes_id] != $_POST['quick_updates_old']['products_attributes_weight'][$products_attributes_id]) {
-            $quick_updates_count['products_attributes_weight'][$products_attributes_id] = $products_attributes_id;
+            #$quick_updates_count['products_attributes_weight'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Weight'][$products_id] = $products_id;
             $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET products_attributes_weight =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
           }
         }
