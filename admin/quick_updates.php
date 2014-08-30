@@ -359,6 +359,16 @@ switch ($_GET['action']) {
       }
     }
 
+    // added for products_purchase_price and margin
+    if($_POST['quick_updates_new']['products_margin']){
+      foreach($_POST['quick_updates_new']['products_margin'] as $products_id => $new_value) {
+        if ($_POST['quick_updates_new']['products_margin'][$products_id] != $_POST['quick_updates_old']['products_margin'][$products_id]) {
+          $quick_updates_count['products_margin'][$products_id] = $products_id;
+          $db->Execute("UPDATE " . TABLE_PRODUCTS . " SET products_margin='" . $new_value . "', products_last_modified=now() WHERE products_id =" . (int)$products_id);
+        }
+      }
+    }
+
     // added for p.products_price_w
     if($_POST['quick_updates_new']['products_price_w']){
       foreach($_POST['quick_updates_new']['products_price_w'] as $products_id => $new_value) {
@@ -444,6 +454,11 @@ switch ($_GET['action']) {
     $rows = $split_page * MAX_DISPLAY_ROW_BY_PAGE - MAX_DISPLAY_ROW_BY_PAGE;
 
   $extra_query = '';
+
+  // added for products_purchase_price and margin
+  if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
+    $extra_query .= ' p.products_purchase_price, p.products_margin,';
+
     
   // added for QUICKUPDATES_NEW_COLUMN_1
   if(QUICKUPDATES_MODIFY_NEW_COLUMN_1 == 'true')
@@ -586,6 +601,30 @@ if($image_sql != '') {
           </td>
           <td class="smallText">
           <!-- bof spec_price form -->
+            <?php 
+            if(QUICKUPDATES_ACTIVATE_COMMERCIAL_MARGIN == 'true'){
+              echo zen_draw_form('price_markup', FILENAME_QUICK_UPDATES, zen_get_all_get_params(array('action', 'info', 'pID')) . "action=calcul");
+              echo TEXT_INPUT_SPEC_PRICE;
+              echo zen_draw_input_field('price_markup',0,'size="5"');
+              if ($preview_markup_price != true) {
+                echo '&nbsp;&nbsp;' . zen_image_submit('button_preview.gif', IMAGE_PREVIEW, zen_get_all_get_params(array()));
+              } else {
+                echo '&nbsp;&nbsp;<a href="' . zen_href_link(FILENAME_QUICK_UPDATES, zen_get_all_get_params(array())) . '">' . zen_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>';
+              }
+              
+                //no idea what this line is usefull for so it's commented out
+                echo '&nbsp;' . zen_draw_checkbox_field('marge','yes',true,'no') . '&nbsp;' . zen_image(DIR_WS_IMAGES . 'icon_info.gif', TEXT_MARGE_INFO);
+              if ($preview_markup_price != true) {
+                echo TEXT_SPEC_PRICE_INFO1 ;
+              } else {
+                echo TEXT_SPEC_PRICE_INFO2;
+              }
+              ?>
+            </form>
+            <?php
+            }
+            ?>
+
           <!-- eof spec_price form -->
           </td>
           <td class="smallText"></td>
@@ -685,6 +724,13 @@ if(QUICKUPDATES_MODIFY_SORT_ORDER == 'true')
   echo zen_quickupdates_table_head('p.products_sort_order', TABLE_HEADING_SORT_ORDER);
 if(QUICKUPDATES_MODIFY_QUANTITY == 'true')
   echo zen_quickupdates_table_head('p.products_quantity', TABLE_HEADING_QUANTITY);
+
+
+// added for products_purchase_price and margin
+if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
+  echo zen_quickupdates_table_head('p.products_purchase_price', TABLE_HEADING_PURCHASE_PRICE);
+if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
+  echo zen_quickupdates_table_head('p.products_margin', TABLE_HEADING_MARGIN);
 
 echo zen_quickupdates_table_head('p.products_price', TABLE_HEADING_PRICE);
 
@@ -912,6 +958,19 @@ while (!$products->EOF) {
 
     if(QUICKUPDATES_MODIFY_QUANTITY == 'true') {
       echo '<td class="smallText">' . zen_draw_input_field('quick_updates_new[products_quantity][' . $products->fields['products_id'] . ']', $products->fields['products_quantity'], 'size="3"') . zen_draw_hidden_field('quick_updates_old[products_quantity][' . $products->fields['products_id'] . ']', $products->fields['products_quantity']) . '</td>' . "\n";
+    }
+
+    // added for products_purchase_price and margin
+    if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true'){
+      $parameters = 'size="6" onKeyUp="updateMargin(' . $products->fields['products_id'] . ');"';
+      echo '<td class="smallText productsPurchasePrice">' . zen_draw_input_field('quick_updates_new[products_purchase_price][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_purchase_price']), $parameters) . zen_draw_hidden_field('quick_updates_old[products_purchase_price][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_purchase_price'])) . '</td>' . "\n";
+    }
+
+    // added for products_purchase_price and margin
+    if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true'){
+      //if ($products->fields['products_margin'] == 0 ) $zeroWarning= ' *'; else $zeroWarning = '';
+      $parameters = 'size="6"';
+      echo '<td class="smallText productsMargin">' . zen_draw_input_field('quick_updates_new[products_margin][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_margin']), $parameters) . zen_draw_hidden_field('quick_updates_old[products_margin][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_margin'])) . '</td>' . "\n";
     }
 
     //// get the specials products list
