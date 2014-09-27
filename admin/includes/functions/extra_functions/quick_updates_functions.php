@@ -13,7 +13,7 @@ if (!defined('IS_ADMIN_FLAG')) {
 function install_quick_updates() {
 	global $db;
 		$db->Execute("INSERT INTO ".TABLE_CONFIGURATION_GROUP." VALUES ('', 'Quick Updates', 'Quick Updates Configuration', '1', '1')");
-		$group_id = mysql_insert_id();
+		$group_id = $db->Insert_ID();
 		$db->Execute("UPDATE ".TABLE_CONFIGURATION_GROUP." SET sort_order = ".$group_id." WHERE configuration_group_id = ".$group_id);
 if (function_exists('zen_register_admin_page')) {
     if (!zen_page_key_exists('quick_updates_config')) {
