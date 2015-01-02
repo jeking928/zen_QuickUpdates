@@ -11,10 +11,10 @@
   define('QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN', 'false');
 
 // change to 'true' to enable wholesale price updates
-  define('QUICKUPDATES_MODIFY_WHOLESALE_PRICE', 'false');
+  //define('QUICKUPDATES_MODIFY_WHOLESALE_PRICE', 'false');
 
 // Set the width of the wholesale price input field
-  define('QUICKUPDATES_MODIFY_WHOLESALE_PRICE_INPUT_SIZE', '6');
+  //define('QUICKUPDATES_MODIFY_WHOLESALE_PRICE_INPUT_SIZE', '6');
 
   define('QUICKUPDATES_DISPLAY_ID_INFO', '<a target="_blank" href="' . HTTP_CATALOG_SERVER . DIR_WS_CATALOG . 'index.php?main_page=product_info&products_id=%1$s">' . '%3$s' . '</a>');
   

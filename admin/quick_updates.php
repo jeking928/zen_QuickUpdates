@@ -379,6 +379,48 @@ switch ($_GET['action']) {
       }
     }
 
+
+    // BEGIN: Allow modification of products priced by attributes
+    if(QUICK_UPDATES_MODIFY_PRODUCT_ATTRIBUTES_PRICE == 'true'){
+      if($_POST['quick_updates_new']['price_prefix']){
+        foreach($_POST['quick_updates_new']['price_prefix'] as $products_attributes_id => $new_value) {
+          if ($_POST['quick_updates_new']['price_prefix'][$products_attributes_id] != $_POST['quick_updates_old']['price_prefix'][$products_attributes_id]) {
+            //$quick_updates_count['price_prefix'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Price Prefix'][$products_id] = $products_id;
+            $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET price_prefix='" . $new_value . "' WHERE products_attributes_id =" . (int)$products_attributes_id);
+          }
+        }
+      }
+      if($_POST['quick_updates_new']['options_values_price']){
+        foreach($_POST['quick_updates_new']['options_values_price'] as $products_attributes_id => $new_value) {
+          if ($_POST['quick_updates_new']['options_values_price'][$products_attributes_id] != $_POST['quick_updates_old']['options_values_price'][$products_attributes_id]) {
+            //$quick_updates_count['options_values_price'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Price'][$products_id] = $products_id;
+            $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET options_values_price =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
+          }
+        }
+      }
+      if($_POST['quick_updates_new']['attributes_price_base_included']){
+        foreach($_POST['quick_updates_new']['attributes_price_base_included'] as $products_attributes_id => $new_value) {
+          if ($_POST['quick_updates_new']['attributes_price_base_included'][$products_attributes_id] != $_POST['quick_updates_old']['attributes_price_base_included'][$products_attributes_id]) {
+            //$quick_updates_count['attributes_price_base_included'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Base Price Included'][$products_id] = $products_id;
+            $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET attributes_price_base_included =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
+          }
+        }
+      }
+      if($_POST['quick_updates_new']['products_attributes_weight']){
+        foreach($_POST['quick_updates_new']['products_attributes_weight'] as $products_attributes_id => $new_value) {
+          if ($_POST['quick_updates_new']['products_attributes_weight'][$products_attributes_id] != $_POST['quick_updates_old']['products_attributes_weight'][$products_attributes_id]) {
+            #$quick_updates_count['products_attributes_weight'][$products_attributes_id] = $products_attributes_id;
+            $quick_updates_count['Attribute Weight'][$products_id] = $products_id;
+            $db->Execute("UPDATE " . TABLE_PRODUCTS_ATTRIBUTES . " SET products_attributes_weight =" . $new_value . " WHERE products_attributes_id =" . (int)$products_attributes_id);
+          }
+        }
+      }
+    }
+    // END: Allow modification of products priced by attributes
+
     $quick_updates_count_string = '';
     if(sizeof($quick_updates_count) > 0){
       $quick_updates_count_string = '<table id="quick_updates_count">' . "\n";
@@ -416,13 +458,11 @@ switch ($_GET['action']) {
     $rows = $split_page * MAX_DISPLAY_ROW_BY_PAGE - MAX_DISPLAY_ROW_BY_PAGE;
 
   $extra_query = '';
+
   // added for products_purchase_price and margin
   if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
     $extra_query .= ' p.products_purchase_price, p.products_margin,';
 
-  // added for p.products_price_w
-  if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true')
-    $extra_query .= ' p.products_price_w,';
     
   // added for QUICKUPDATES_NEW_COLUMN_1
   if(QUICKUPDATES_MODIFY_NEW_COLUMN_1 == 'true')
@@ -491,11 +531,6 @@ function init()
      kill.disabled = true;
    }
  }
-
-function popupWindow(url) {
-  window.open(url, 'popupWindow', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=no');
-}
-
 var browser_family;
 var up = 1;
 
@@ -510,6 +545,7 @@ else
 
 -->
 </script>
+<?php if ($editor_handler != '') include ($editor_handler); ?>
 </head>
 <body onLoad="init()" id="quickUpdates">
 <!-- header //-->
@@ -547,7 +583,6 @@ if($image_sql != '') {
       <div class="quHeadingText"><?php echo QU_HEADING_TEXT; ?></div>
 	  <?PHP // Chadderuski - added uninstall link ?>
       <a class="button forward" title="Un-Install Quick Updates" href="<?php echo zen_href_link(FILENAME_QUICK_UPDATES, 'qu_installer=remove') ?>">Uninstall</a><br /><br />
-   
       <!-- eof pageHeading -->
             
       <!-- bof top forms -->
@@ -593,6 +628,7 @@ if($image_sql != '') {
             <?php
             }
             ?>
+
           <!-- eof spec_price form -->
           </td>
           <td class="smallText"></td>
@@ -680,6 +716,8 @@ if(QUICKUPDATES_MODIFY_NEW_COLUMN_1 == 'true')
   
 if(QUICKUPDATES_MODIFY_NAME == 'true')
   echo zen_quickupdates_table_head('pd.products_name', TABLE_HEADING_PRODUCTS);
+if(QUICK_UPDATES_MODIFY_PRODUCT_ATTRIBUTES_PRICE == 'true')
+  echo zen_quickupdates_table_head('', 'Attributes');
 if(QUICKUPDATES_MODIFY_DESCRIPTION == 'true')
   echo zen_quickupdates_table_head('pd.products_description', TABLE_HEADING_PRODUCTS_DESCRIPTION);
 if(QUICKUPDATES_MODIFY_MANUFACTURER == 'true')
@@ -691,15 +729,12 @@ if(QUICKUPDATES_MODIFY_SORT_ORDER == 'true')
 if(QUICKUPDATES_MODIFY_QUANTITY == 'true')
   echo zen_quickupdates_table_head('p.products_quantity', TABLE_HEADING_QUANTITY);
 
+
 // added for products_purchase_price and margin
 if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
   echo zen_quickupdates_table_head('p.products_purchase_price', TABLE_HEADING_PURCHASE_PRICE);
 if(QUICKUPDATES_MODIFY_PURCHASE_AND_MARGIN == 'true')
   echo zen_quickupdates_table_head('p.products_margin', TABLE_HEADING_MARGIN);
-
-// added for p.products_price_w
-if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true')
-  echo zen_quickupdates_table_head('p.products_price_w', TABLE_HEADING_WHOLESALE_PRICE);
 
 echo zen_quickupdates_table_head('p.products_price', TABLE_HEADING_PRICE);
 
@@ -729,6 +764,8 @@ if ($_POST['price_markup']){
 
 // bof walk products object
 while (!$products->EOF) {
+
+
   // check the previous products_id:
   // we do not want products that are linked to multiple categories show up multiple times! ("top cat" selected)
   if($prev_products_id != $products->fields['products_id']){
@@ -771,7 +808,7 @@ while (!$products->EOF) {
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'display\', ' . $price . ', ' . $tax_rate->fields['tax_rate'] . ');';
       }
-      $tr .= 'this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="';
+      $tr .= 'this.className=\'dataTableRowOver\';" onmouseout="';
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'delete\');';
       }
@@ -779,7 +816,7 @@ while (!$products->EOF) {
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'display\', ' . $products->fields['products_price'] . ', ' . $tax_rate->fields['tax_rate'] . ');';
       }
-      $tr .= 'this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="';
+      $tr .= 'this.className=\'dataTableRowOver\';" onmouseout="';
       if(QUICKUPDATES_DISPLAY_TVA_OVER == 'true'){
         $tr .= 'display_ttc(\'delete\', \'\', \'\', 0);';
       }
@@ -806,8 +843,8 @@ while (!$products->EOF) {
       echo '<td class="smallText productsImage">' .
       zen_draw_hidden_field('quick_updates_new[products_image][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_image']), 'id="SelectImageName_' . $products->fields['products_id'] . '"') .
       zen_draw_hidden_field('quick_updates_old[products_image][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_image'])) .
-      '<a href="javascript:selectFileID=\'SelectImageName_' . $products->fields['products_id'] . '\';updateImgId=\'SelectImageName_' . $products->fields['products_id'] . '_img\';popupWindow(\'' . zen_href_link(FILENAME_POPUP_FILE_SELECT, 'sdir=' . dirname($products->fields['products_image']) . '/') . '\');">' .
-      zen_image(DIR_WS_CATALOG_IMAGES . $products->fields['products_image'], TEXT_SELECT_IMAGE, QUICKUPDATES_DISPLAY_THUMBNAIL_WIDTH, QUICKUPDATES_DISPLAY_THUMBNAIL_HEIGHT, 'id="SelectImageName_' . $products->fields['products_id'] . '_img"') . '</a>'
+//      '<a href="javascript:selectFileID=\'SelectImageName_' . $products->fields['products_id'] . '\';updateImgId=\'SelectImageName_' . $products->fields['products_id'] . '_img\';popupWindow(\'' . zen_href_link(FILENAME_POPUP_FILE_SELECT, 'sdir=' . dirname($products->fields['products_image']) . '/') . '\');">' .
+      zen_image(DIR_WS_CATALOG_IMAGES . $products->fields['products_image'], '', QUICKUPDATES_DISPLAY_THUMBNAIL_WIDTH, QUICKUPDATES_DISPLAY_THUMBNAIL_HEIGHT, 'id="SelectImageName_' . $products->fields['products_id'] . '_img"') . '</a>'
        . '</td>' . "\n";
     }
 
@@ -838,18 +875,73 @@ while (!$products->EOF) {
       echo '<td class="smallText productsName"><div>' . zen_draw_input_field('quick_updates_new[products_name][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_name']), 'size="16"') . zen_draw_hidden_field('quick_updates_old[products_name][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_name'])) . '</div></td>' . "\n";
     }
 
-//BOF Product Description Column
-    if(QUICKUPDATES_MODIFY_DESCRIPTION == 'true'||QUICKUPDATES_MODIFY_DESCRIPTION_POPUP == 'true') {
-      echo '<td class="smallText productsDescription">';
-      // no need to display description when popup edit is enabled (?)
-      if(QUICKUPDATES_MODIFY_DESCRIPTION_POPUP == 'true') echo '<div style="display: none">';
-      echo zen_draw_textarea_field('quick_updates_new[products_description][' . $products->fields['products_id'] . ']', 'soft', 200, 2, stripslashes($products->fields['products_description']), 'id="description_' . $products->fields['products_id'] . '"') . zen_draw_hidden_field('quick_updates_old[products_description][' . $products->fields['products_id'] . '] ', stripslashes($products->fields['products_description']));
-      if(QUICKUPDATES_MODIFY_DESCRIPTION_POPUP == 'true') echo '</div>';
-      //echo "</td>\n";
-      if(QUICKUPDATES_MODIFY_DESCRIPTION_POPUP == 'true') {
-      //echo '<td class="smallText productsDescription">'
-        echo '<a href="javascript:textEditFieldID=\'description_' . $products->fields['products_id'] . '\';popupWindow(\'' . zen_href_link(FILENAME_POPUP_TEXT_EDIT) . '\');">' . zen_image(DIR_WS_IMAGES . 'icon_edit.gif', TEXT_HTML_EDIT_DESC) . '<span class="cssPopup">' . stripslashes($products->fields['products_description']) . '</span></a>';
+
+    // BEGIN: Allow modification of products priced by attributes
+    // products price by attributes
+    if(QUICK_UPDATES_MODIFY_PRODUCT_ATTRIBUTES_PRICE == 'true'){
+      $attributes = "select pa.*
+      from (" . TABLE_PRODUCTS_ATTRIBUTES . " pa
+      left join " . TABLE_PRODUCTS_DESCRIPTION . " pd
+      on pa.products_id = pd.products_id
+      and pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
+      left join " . TABLE_PRODUCTS_OPTIONS . " po
+      on pa.options_id = po.products_options_id
+      and po.language_id = '" . (int)$_SESSION['languages_id'] . "'" . ")
+      where pa.products_id ='" . $products->fields['products_id'] . "'
+      order by pd.products_name, LPAD(po.products_options_sort_order,11,'0'), LPAD(pa.options_id,11,'0'), LPAD(pa.products_options_sort_order,11,'0')";
+
+      $attributes_values = $db->Execute($attributes);
+      echo '<td class="smallText productsAttributes"><div>';
+      while (!$attributes_values->EOF) {
+        $current_attributes_products_id = $products->fields['products_id'];
+        $current_products_attributes_id = $attributes_values->fields['products_attributes_id'];
+        $products_name_only = zen_get_products_name($attributes_values->fields['products_id']);
+        $options_name = zen_options_name($attributes_values->fields['options_id']);
+        $values_name = zen_values_name($attributes_values->fields['options_values_id']);
+
+        $attribute_input_name_new = "quick_updates_new[price_prefix][$current_products_attributes_id]";
+        $attribute_input_name_old = "quick_updates_old[price_prefix][$current_products_attributes_id]";
+        $plus_selected = ($attributes_values->fields['price_prefix'] == '+') ? 'selected' : '';
+        $minus_selected = ($attributes_values->fields['price_prefix'] == '-') ? 'selected' : '';
+        echo "<p><strong>$options_name:</strong> $values_name</p>";
+        echo "<p>Price Prefix: <select name=\"$attribute_input_name_new\"><option value=\"+\" $plus_selected>+</option><option value=\"-\" $minus_selected>-</option></select></p>";
+        echo "<input type=\"hidden\" name=\"$attribute_input_name_old\" value=\"{$attributes_values->fields['price_prefix']}\" />";
+
+        $attribute_input_name_new = "quick_updates_new[options_values_price][$current_products_attributes_id]";
+        $attribute_input_name_old = "quick_updates_old[options_values_price][$current_products_attributes_id]";
+        echo "<p>Price: <input type=\"text\" name=\"$attribute_input_name_new\" value=\"{$attributes_values->fields['options_values_price']}\" /></p>";
+        echo "<input type=\"hidden\" name=\"$attribute_input_name_old\" value=\"{$attributes_values->fields['options_values_price']}\" />";
+
+        $attribute_input_name_new = "quick_updates_new[attributes_price_base_included][$current_products_attributes_id]";
+        $attribute_input_name_old = "quick_updates_old[attributes_price_base_included][$current_products_attributes_id]";
+        $true_selected = ($attributes_values->fields['attributes_price_base_included'] == 1) ? 'selected' : '';
+        $false_selected = ($true_selected == 'selected') ? '' : 'selected'; 
+        echo "<p>Base Price Included: <select name=\"$attribute_input_name_new\" /><option value=\"1\" $true_selected>Yes</option><option value=\"0\" $false_selected>No</option></select>";
+        echo "<input type=\"hidden\" name=\"$attribute_input_name_old\" value=\"{$attributes_values->fields['attributes_price_base_included']}\" />";
+
+        $attribute_input_name_new = "quick_updates_new[products_attributes_weight][$current_products_attributes_id]";
+        $attribute_input_name_old = "quick_updates_old[products_attributes_weight][$current_products_attributes_id]";
+
+        echo "<p>Weight: <input type=\"text\" name=\"$attribute_input_name_new\" value=\"{$attributes_values->fields['products_attributes_weight']}\" /></p>";
+        echo "<input type=\"hidden\" name=\"$attribute_input_name_old\" value=\"{$attributes_values->fields['products_attributes_weight']}\" />";
+        echo "<p>&nbsp;</p>";
+        echo "<hr />";
+        echo "<p>&nbsp;</p>";
+        $attributes_values->MoveNext();
       }
+      echo '</div></td>';
+    }
+    // END: modification of products priced by attributes
+
+
+
+
+
+//BOF Product Description Column
+    //if(QUICKUPDATES_MODIFY_DESCRIPTION == 'true'||QUICKUPDATES_MODIFY_DESCRIPTION_POPUP == 'true') {
+    if(QUICKUPDATES_MODIFY_DESCRIPTION == 'true') {
+      echo '<td class="smallText productsDescription">';
+      echo zen_draw_textarea_field('quick_updates_new[products_description][' . $products->fields['products_id'] . ']', 'soft', 200, 2, stripslashes($products->fields['products_description']), 'id="description_' . $products->fields['products_id'] . '"') . zen_draw_hidden_field('quick_updates_old[products_description][' . $products->fields['products_id'] . '] ', stripslashes($products->fields['products_description']));
       echo "</td>\n";
     }
 //EOF Product Description Column
@@ -883,12 +975,6 @@ while (!$products->EOF) {
       //if ($products->fields['products_margin'] == 0 ) $zeroWarning= ' *'; else $zeroWarning = '';
       $parameters = 'size="6"';
       echo '<td class="smallText productsMargin">' . zen_draw_input_field('quick_updates_new[products_margin][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_margin']), $parameters) . zen_draw_hidden_field('quick_updates_old[products_margin][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_margin'])) . '</td>' . "\n";
-    }
-
-    // added for p.products_price_w
-    if(QUICKUPDATES_MODIFY_WHOLESALE_PRICE == 'true'){
-      $parameters = 'size="' . QUICKUPDATES_MODIFY_WHOLESALE_PRICE_INPUT_SIZE . '"';
-      echo '<td class="smallText products_price_w">' . zen_draw_input_field('quick_updates_new[products_price_w][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_price_w'])) . zen_draw_hidden_field('quick_updates_old[products_price_w][' . $products->fields['products_id'] . ']', stripslashes($products->fields['products_price_w']), $parameters) . '</td>' . "\n";
     }
 
     //// get the specials products list
